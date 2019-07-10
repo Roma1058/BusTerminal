@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.RestController;
 import roman.kononenko.busterminal.entity.Address;
 import roman.kononenko.busterminal.repository.AddressRepository;
 
+import javax.validation.Valid;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SplittableRandom;
-import java.util.stream.Collectors;
 
 @RestController
 public class testController {
@@ -26,7 +26,7 @@ public class testController {
     }
 
     @GetMapping("/getRandom")
-    public Integer RandNum(@RequestParam(required = false, defaultValue = "0") Integer min, @RequestParam(defaultValue = "10") Integer max)
+    public Integer RandNum(@RequestParam(required = false, defaultValue = "0") Integer min, @Valid @RequestParam(defaultValue = "10") Integer max)
     {
         return new SplittableRandom().nextInt(min, max);
     }
