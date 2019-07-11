@@ -19,7 +19,9 @@ public class Route {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column()
     private Double lengthRoute;
+
 
     private Time timeOnRoad;
 
