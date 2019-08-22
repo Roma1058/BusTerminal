@@ -37,4 +37,27 @@ public class StopService {
         return new PageResponse<>( page.get().map(StopResponse::new).collect(Collectors.toList()),
                 page.getTotalPages(), page.getTotalElements());
     }
+
+    public Long getLastId() {
+        List<StopResponse> allStop = findAll();
+        return allStop.get(allStop.size() - 1).getId();
+    }
+
+    public void delete(Long id)
+    {
+        stopRepository.deleteById(id);
+    }
+
+    public void update(Long id, StopRequest stopRequest) {
+
+        stopRepository.save(stopRequestToStop(stopRepository.getOne(id), stopRequest));
+    }
+
+    private Stop stopRequestToStop(Stop stop, StopRequest stopRequest) {
+        if (stop == null) {
+            stop = new Stop();
+        }
+        stop.setPlaceName(stopRequest.getPlaceName());
+        return stop;
+    }
 }

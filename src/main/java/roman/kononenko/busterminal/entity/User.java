@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,12 +24,17 @@ public class User {
 
     private String surname;
 
+    @Column(nullable = false, unique = true)
+    private String login;
+
+    @Column(nullable = false)
     private String password;
 
     private String sex;
 
     private String email;
 
+    @Column(nullable = false, unique = true)
     private boolean privilege;
 
     @OneToOne
