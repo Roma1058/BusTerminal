@@ -27,4 +27,7 @@ public class UserController {
     public List<User> getUsers(){
         return userService.getUsers();
     }
+
+    @PostMapping("/registration")
+    public String registration(@Valid @RequestBody UserRequest userRequest){ return userService.registration(userRequest);}
 }

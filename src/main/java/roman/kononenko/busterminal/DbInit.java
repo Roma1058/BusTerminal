@@ -1,5 +1,6 @@
 package roman.kononenko.busterminal;
 
+import lombok.Getter;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ import java.util.List;
 @Service
 public class DbInit implements CommandLineRunner {
     private UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
+    public PasswordEncoder passwordEncoder;
 
     public DbInit(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;

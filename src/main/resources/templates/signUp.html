@@ -34,30 +34,30 @@
 </style>
 
 <body>
-    <div class="page-wrapper bg-gra-01 p-t-180 p-b-100 font-poppins">
+    <div class="page-wrapper bg-gra-01 p-b-100 font-poppins" style="padding-top: 50px;">
         <div class="wrapper wrapper--w780">
             <div class="card card-3">
                 <div class="card-heading"></div>
                 <div class="card-body">
                     <h2 class="title">Registration Info</h2>
-                    <form method="POST">
                         <div class="input-group">
-                            <input class="input--style-3" type="text" placeholder="Name" name="name">
+                            <input id="userName" class="input--style-3" type="text" placeholder="Name" name="name">
                         </div>
                         <div class="input-group">
-                            <input class="input--style-3" type="text" placeholder="Surname" name="surname">
+                            <input id="userSurname" class="input--style-3" type="text" placeholder="Surname" name="surname">
                         </div>
-                        <p class="errorAnnot" >Current user already exist</p>
-                        <div class="input-group" id="erLog">
-                            <input class="input--style-3" type="text" placeholder="Login" name="login">
+                        <p class="errorAnnot" id="erLog">Current user already exist</p>
+                        <div class="input-group" >
+                            <input id="userLogin" class="input--style-3" type="text" placeholder="Login" name="login">
                         </div>
                         <p class="errorAnnot" id="erPas1">Not the same password</p>
+                        <p class="errorAnnot" id="erPasShort">Too short password</p>
                         <div class="input-group">
-                            <input class="input--style-3" type="password" placeholder="Password" name="password">
+                            <input id="userPassword" class="input--style-3" type="password" placeholder="Password" name="password">
                         </div>
                         <p class="errorAnnot" id="erPas2">Not the same password</p>
                         <div class="input-group">
-                            <input class="input--style-3" type="password" placeholder="Repeat password" name="password">
+                            <input id="userRepPassword" class="input--style-3" type="password" placeholder="Repeat password" name="password">
                         </div>
 <!--                        <div class="input-group">-->
 <!--                            <input class="input&#45;&#45;style-3 js-datepicker" type="text" placeholder="Birthdate" name="birthday">-->
@@ -65,7 +65,7 @@
 <!--                        </div>-->
                         <div class="input-group">
                             <div class="rs-select2 js-select-simple select--no-search">
-                                <select name="gender">
+                                <select id="userSex" name="gender">
                                     <option disabled="disabled" selected="selected">Gender</option>
                                     <option>Male</option>
                                     <option>Female</option>
@@ -75,15 +75,14 @@
                             </div>
                         </div>
                         <div class="input-group">
-                            <input class="input--style-3" type="email" placeholder="Email" name="email">
+                            <input id="userEmail" class="input--style-3" type="email" placeholder="Email" name="email">
                         </div>
 <!--                        <div class="input-group">-->
 <!--                            <input class="input&#45;&#45;style-3" type="text" placeholder="Phone" name="phone">-->
 <!--                        </div>-->
                         <div class="p-t-10">
-                            <button class="btn btn--pill btn--green" type="submit">Submit</button>
+                            <button class="btn btn--pill btn--green" type="submit" id="subButton">Submit</button>
                         </div>
-                    </form>
                 </div>
             </div>
         </div>
@@ -101,5 +100,83 @@
 
 </body>
 
+<script>
+    $(document).ready(function(){
+        $("#erLog").hide();
+        $("#erPas1").hide();
+        $("#erPas2").hide();
+        $("#erPasShort").hide();
+    });
+
+    $(document).on('click', '#subButton', function () {
+        $("#erPasShort").hide();
+
+        if ($('#userPassword').val() === $('#userRepPassword').val()){
+            $("#erPas1").hide();
+            $("#erPas2").hide();
+
+            if($('#userLogin').val() !== ""){
+
+                $("#erLog").hide();
+
+            var user = new Object();
+        user.name = $('#userName').val();
+        user.surname = $('#userSurname').val();
+        user.login = $('#userLogin').val();
+        user.password = $('#userPassword').val();
+        user.sex = $('#userSex').val();
+        user.email = $('#userEmail').val();
+
+        var jsonUserReg = JSON.stringify(user);
+
+        $.ajax({
+            url: 'https://localhost:8443/registration',
+            type: 'post',
+            data: jsonUserReg,
+            contentType: 'application/json',
+            success: function (data, status, xhr) {
+                if(data === "exist"){
+                    $("#erLog").show();
+                } else {
+                    var aut = new Object();
+                                aut.username = $('#userLogin').val();
+                                aut.password = $('#userPassword').val();
+
+                                var jsonAut = JSON.stringify(aut);
+                                $.ajax({
+                                    url: 'https://localhost:8443/login',
+                                    type: 'post',
+                                    data: jsonAut,
+                                    contentType: 'application/json',
+                                    success: function(data, status, xhr) {
+
+                                        var token = xhr.getResponseHeader('Authorization');
+                                        var role = xhr.getResponseHeader('Role');
+
+                                        localStorage.setItem('token', token);
+                                        localStorage.setItem('role', role);
+
+                                        window.location.replace("https://localhost:8443/");
+                                    },
+                                    error: (e) => {
+                                        console.log(e);
+                                        alert('non correct data');
+                                    }
+                                })
+                }
+            },
+            error: (e) => {
+                $("#erPasShort").show();
+            }
+        })
+            } else{
+                $("#erLog").show();
+            }
+    } else{
+            $("#erPas1").show();
+            $("#erPas2").show();
+        }
+            });
+</script>
 </html>
 <!-- end document-->

@@ -3,6 +3,9 @@ package roman.kononenko.busterminal.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import roman.kononenko.busterminal.dto.request.UserRequest;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -50,5 +53,4 @@ public class User {
         this.role = role;
         this.active = 1;
     }
-
 }
