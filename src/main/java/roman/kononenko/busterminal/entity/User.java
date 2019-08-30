@@ -34,13 +34,21 @@ public class User {
 
     private String email;
 
-    @Column(nullable = false, unique = true)
-    private boolean privilege;
+    private String role = "";
+
+    private Integer active;
 
     @OneToOne
     private Cart cart;
 
     @ManyToMany(mappedBy = "users")
     private List<BusTerminal> busTerminals = new ArrayList<>();
+
+    public User(String username, String password, String role){
+        this.login = username;
+        this.password = password;
+        this.role = role;
+        this.active = 1;
+    }
 
 }

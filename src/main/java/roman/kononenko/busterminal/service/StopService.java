@@ -16,7 +16,8 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
-public class StopService {
+public class
+StopService {
     @Autowired
     private StopRepository stopRepository;
 

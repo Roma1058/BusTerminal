@@ -1,9 +1,13 @@
 package roman.kononenko.busterminal.controller;
 
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Controller
+@ComponentScan(basePackages = {"roman.kononenko.busterminal.controller"})
 public class HTMLPagesController {
 
     @RequestMapping("/stopService")
@@ -11,8 +15,34 @@ public class HTMLPagesController {
         return "index.html";
     }
 
+    @GetMapping("/auth")
+    public String login(){ return "authorization.html"; }
+
     @RequestMapping("/")
-    public String homePage(){
-        return "authorization.html";
+    public String home()
+    {
+        return "homePage.html";
+    }
+
+    @RequestMapping("/all")
+    public String all(){
+        return "all.html";
+    }
+
+    @RequestMapping("/userView")
+    public String userView(){
+        return "user.html";
+    }
+
+    @RequestMapping("/adminView")
+    public String admView(){
+        return "admin.html";
+    }
+
+    @RequestMapping("/signUp")
+    public String signUp(){
+        return "signUp.html";
     }
 }
+
+
